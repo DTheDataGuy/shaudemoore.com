@@ -129,3 +129,60 @@
   };
   if (document.readyState === 'complete') initGsap(); else addEventListener('load', initGsap);
 })();
+
+// ---------- Impact metrics: live totals, count-up, details dialog ----------
+(() => {
+  const vals = [...document.querySelectorAll('[data-metric]')];
+  if (!vals.length) return;
+  const CSV = 'https://docs.google.com/spreadsheets/d/1Ayxf8ZI1YFEPSxzEi8hEIhzA0rpd8LubALV8D7vsvp0/gviz/tq?tqx=out:csv&sheet=Website%20Totals';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const run = el => {
+    const to = +el.dataset.target || 0;
+    if (reduce) { el.textContent = fmt(to); el.dataset.done = 1; return; }
+    const from = el.dataset.done ? (+el.textContent.replace(/,/g, '') || 0) : 0;
+    const t0 = performance.now(), d = el.dataset.done ? 700 : 1800;
+    const step = t => { const p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 4);
+      el.textContent = fmt(from + (to - from) * e); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step); el.dataset.done = 1;
+  };
+  if (!reduce) vals.forEach(el => { el.textContent = '0'; });
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.dataset.seen = 1; run(e.target); io.unobserve(e.target); }
+  }), { threshold: .4 });
+  vals.forEach(el => io.observe(el));
+
+  // live totals from the engagement tracker
+  const parse = t => t.trim().split(/\r?\n/).map(r => (r.match(/("([^"]|"")*"|[^,]*)(,|$)/g) || [])
+    .map(c => c.replace(/,$/, '').replace(/^"|"$/g, '').replace(/""/g, '"')));
+  fetch(CSV, { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject()).then(t => {
+    parse(t).slice(1).forEach(([k, , v]) => {
+      if (k === 'updated') { if (v) document.querySelectorAll('[data-metric-updated]').forEach(n => n.textContent = v); return; }
+      const n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+      if (!isFinite(n) || n <= 0) return;
+      document.querySelectorAll(`[data-metric="${k}"]`).forEach(el => {
+        if (+el.dataset.target === n) return;
+        el.dataset.target = n; if (el.dataset.seen || reduce) run(el);
+      });
+    });
+  }).catch(() => {});
+
+  // details dialog
+  const dlg = document.getElementById('imd'), src = document.getElementById('impact-data');
+  if (!dlg || !src) return;
+  const data = JSON.parse(src.textContent); let opener = null;
+  const html = s => { const d = document.createElement('div'); d.innerHTML = s; return d.textContent; };
+  document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.open, m = data[k], v = document.querySelector(`[data-metric="${k}"]`);
+    dlg.querySelector('#imd-g').textContent = html(m.group);
+    const n = dlg.querySelector('#imd-n'); n.textContent = fmt(+v.dataset.target);
+    if (m.suf) { const s = document.createElement('span'); s.textContent = m.suf; n.append(s); }
+    dlg.querySelector('#imd-t').textContent = html(m.label);
+    dlg.querySelector('#imd-d').textContent = html(m.desc);
+    const c = dlg.querySelector('#imd-c'); c.replaceChildren(...m.types.map(t => { const li = document.createElement('li'); li.textContent = html(t); return li; }));
+    opener = b; dlg.showModal();
+  }));
+  dlg.addEventListener('click', e => { if (e.target !== dlg) return; const r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close(); });
+  dlg.addEventListener('close', () => opener && opener.focus());
+})();
