@@ -37,6 +37,15 @@
   }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
   $$('.rv, .rv-clip').forEach(el => io.observe(el));
 
+  // handwritten signature: writes itself once, when it scrolls into view
+  const sig = $('.sig');
+  if (sig) {
+    const so = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { setTimeout(() => sig.classList.add('on'), 250); so.disconnect(); }
+    }), { threshold: .6 });
+    so.observe(sig);
+  }
+
   // split MLK quote into words
   const q = $('.mlk__quote .words');
   if (q) {

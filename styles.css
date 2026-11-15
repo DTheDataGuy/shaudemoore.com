@@ -260,7 +260,14 @@ em{font-style:italic}
 .foot{background:var(--forest-2); color:var(--cream); padding-block:3rem}
 .foot__in{display:flex; justify-content:space-between; align-items:flex-end; gap:2rem; flex-wrap:wrap}
 .foot__sig{font-family:var(--display); font-size:1.5rem; line-height:1.15}
-.foot__sig em{color:var(--lime); font-size:2.6rem}
+.foot__sig p{font-style:italic}
+.sig{display:block; width:clamp(11rem, 22vw, 15rem); height:auto; margin-top:.35rem; margin-left:-.2rem; overflow:visible}
+.sig__ink{fill:#a6cf5a}
+@media (prefers-reduced-motion:no-preference){
+  .js .sig mask path{stroke-dasharray:1 1; stroke-dashoffset:1}
+  .js .sig.on mask path{animation:sigw var(--t) cubic-bezier(.45,.05,.55,.95) var(--d) forwards}
+}
+@keyframes sigw{to{stroke-dashoffset:0}}
 .foot__meta{text-align:right; font-size:.82rem; color:rgba(245,240,227,.76)}
 .foot__credit{margin-top:.2rem; font-size:.78rem}
 
@@ -698,3 +705,14 @@ body[data-theme=card] .progress{display:none}
 .vc__qr svg{width:7.5rem; height:7.5rem; display:block; margin:0 auto}
 .vc__qr p{font-size:.78rem; color:rgba(18,38,27,.6); margin:.7rem 0 0}
 .vc__url{font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(18,38,27,.5); margin:1rem 0 0}
+
+/* footer grid: signature | nav | meta */
+@media (min-width: 1000px){
+  .foot__in{display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:start; gap:2rem 3.5rem}
+  .foot__nav{order:0; justify-self:center; margin-top:.4rem}
+  .foot__meta{text-align:right; margin-top:.4rem}
+}
+@media (max-width: 999.98px){
+  .foot__in{display:flex; flex-direction:column; align-items:flex-start}
+  .foot__meta{text-align:left}
+}
