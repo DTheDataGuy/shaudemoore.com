@@ -856,3 +856,7 @@ body[data-theme="experience"] .epi--tint,body[data-theme="media"] .epi--tint{--s
   .pull__by{flex-direction:column; align-items:flex-start; gap:.1rem}
   .hq--inset{margin-left:0}
 }
+
+.award__ph{grid-column:1/-1; margin-top:clamp(1rem,3vw,2rem)}
+.award__ph img{width:100%; height:auto; border-radius:4px; display:block}
+.award__ph figcaption{margin-top:.8rem; font-size:.8rem; color:rgba(247,244,237,.7)}
