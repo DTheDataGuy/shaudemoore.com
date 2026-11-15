@@ -38,12 +38,12 @@
   $$('.rv, .rv-clip').forEach(el => io.observe(el));
 
   // handwritten signature: writes itself once, when it scrolls into view
-  const sig = $('.sig');
-  if (sig) {
+  const sigs = document.querySelectorAll('.sig');
+  if (sigs.length) {
     const so = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) { setTimeout(() => sig.classList.add('on'), 250); so.disconnect(); }
+      if (e.isIntersecting) { const t = e.target; setTimeout(() => t.classList.add('on'), 350); so.unobserve(t); }
     }), { threshold: .6 });
-    so.observe(sig);
+    sigs.forEach(s => so.observe(s));
   }
 
   // split MLK quote into words
