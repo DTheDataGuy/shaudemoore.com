@@ -860,3 +860,16 @@ body[data-theme="experience"] .epi--tint,body[data-theme="media"] .epi--tint{--s
 .award__ph{grid-column:1/-1; margin-top:clamp(1rem,3vw,2rem)}
 .award__ph img{width:100%; height:auto; border-radius:4px; display:block}
 .award__ph figcaption{margin-top:.8rem; font-size:.8rem; color:rgba(247,244,237,.7)}
+
+/* Two funding figures side by side */
+.grant__grid{grid-template-columns:repeat(2,minmax(0,1fr)); align-items:stretch}
+.grant__head{grid-column:1/-1; max-width:62rem}
+.grant__s a{color:var(--gold-2); text-decoration:underline; text-underline-offset:.18em; text-decoration-thickness:1px}
+.grant__s a:hover{color:var(--cream)}
+@media (max-width:760px){ .grant__grid{grid-template-columns:minmax(0,1fr)} }
+
+/* Signature hashtag */
+.foot__tag{margin-top:.9rem; font-family:var(--sans); font-style:normal !important; font-size:.82rem; font-weight:600; letter-spacing:.14em; color:var(--lime, #a6cf5a)}
+
+/* The signature itself names her; keep the text name for screen readers only */
+.epi__n,.pull__n{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
