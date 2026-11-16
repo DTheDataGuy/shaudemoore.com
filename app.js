@@ -88,7 +88,7 @@
       try {
         const r = await fetch('https://formsubmit.co/ajax/' + TO, {
           method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ ...d, _subject: 'New booking request from shaudemoore.pplx.app', _template: 'table', _captcha: 'false' })
+          body: JSON.stringify({ ...d, _subject: 'New booking request from shaudemoore.com', _template: 'table', _captcha: 'false' })
         });
         const j = await r.json().catch(() => ({}));
         if (!r.ok || String(j.success) === 'false') throw new Error(j.message || 'failed');

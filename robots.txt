@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shaudemoore.pplx.app/sitemap.xml
+Sitemap: https://shaudemoore.com/sitemap.xml
