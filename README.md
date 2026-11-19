@@ -8,12 +8,9 @@ Personal website of **Shaudé Moore**, Seattle executive leader, speaker and adv
 
 Home · Story · Leadership · Experience · Awards · Media · Connect, plus a digital business card (`card.html`) with a downloadable contact file (`shaude-moore.vcf`).
 
-## Built for speed and search
+## How it's built
 
-- Static HTML, CSS and JavaScript on GitHub Pages with a custom domain
-- Responsive WebP images in several sizes
-- Canonical URLs, Open Graph tags, `sitemap.xml` and `robots.txt`
-- Installable web app manifest and full icon set
+Plain HTML, CSS and JavaScript, hosted on GitHub Pages with a custom domain. Images are WebP in a few sizes so phones don't download desktop files. Every page has a canonical URL and Open Graph tags, and there's a `sitemap.xml`, `robots.txt` and a web app manifest.
 
 ## Run it locally
 
