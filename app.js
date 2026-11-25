@@ -59,10 +59,6 @@
     const TO = 'shaudemoore89@gmail.com';
     const fields = [['name','Name'],['organization','Organization'],['email','Email'],['request_type','Type of request'],['event_date','Event date'],['location','Location'],['description','Description']];
     const data = () => Object.fromEntries(fields.map(([k]) => [k, (new FormData(form).get(k) || '').toString().trim()]));
-    const mailto = d => {
-      const body = fields.map(([k, l]) => `${l}: ${d[k] || ''}`).join('\n');
-      return `mailto:${TO}?subject=${encodeURIComponent('Booking request: ' + (d.request_type || 'Inquiry') + (d.organization ? ' from ' + d.organization : ''))}&body=${encodeURIComponent(body)}`;
-    };
     const check = () => {
       let first = null;
       $$('input[required]:not([type=radio]), textarea[required]', form).forEach(el => {
@@ -96,7 +92,7 @@
         status.textContent = `Thank you, ${d.name.split(' ')[0]}. Your request is on its way to Shaudé, and she will be in touch soon.`;
       } catch (err) {
         status.classList.add('is-err');
-        status.innerHTML = `The form could not send just now. <a href="${mailto(d)}">Email your request instead</a>; it opens with your details filled in.`;
+        status.innerHTML = 'The form could not send just now. Please try again in a moment, or reach Shaudé on <a href="https://www.linkedin.com/in/shaude-moore-edd-candidate-0b251350" target="_blank" rel="noopener">LinkedIn</a>.';
       } finally { go.disabled = false; }
     });
   }
